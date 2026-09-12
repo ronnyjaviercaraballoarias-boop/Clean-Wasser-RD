@@ -1,6 +1,6 @@
 # CleanWasserRD — sitio web
 
-Sitio de una sola página (HTML/CSS/JS puro, sin frameworks) para mostrar los productos de CleanWasserRD y capturar pedidos: el cliente ve el catálogo, presiona "Pedir ahora", llena un formulario con su WhatsApp y correo, y ese pedido te llega a ti.
+Sitio de una sola página (HTML/CSS/JS puro, sin frameworks) para mostrar los productos de CleanWasserRD y capturar pedidos: el cliente puede agregar varios productos a un carrito (ajustando cantidades), revisar y editar su carrito, y al confirmar llena un formulario con su WhatsApp y correo — ese pedido (con el detalle de todos los productos y el total) te llega a ti.
 
 ## Antes de publicar — 1 cosa que falta configurar
 
@@ -16,7 +16,17 @@ Sin esa clave, el sitio funciona igual, pero al enviar el formulario le dirá al
 
 ## También puedes editar
 
-- **Precios**: cada producto tiene `RD$ 100` como precio de ejemplo (así lo pediste). Búscalo en `index.html` — hay 4 líneas `<span class="price">RD$ 100</span>` y 4 atributos `data-price="RD$ 100"` en los botones "Pedir ahora" (uno por cada producto, incluyendo Doble Acción Premium Cisternas).
+- **Precios**: cada producto tiene `RD$ 100` como precio de ejemplo (así lo pediste). Búscalo en `index.html` — hay 4 líneas `<span class="price">RD$ 100</span>` y 4 atributos `data-price="RD$ 100"` en los botones "Agregar al carrito" (uno por cada producto, incluyendo Doble Acción Premium Cisternas).
+
+## Carrito de compras
+
+El cliente puede agregar varios productos distintos (ajustando la cantidad de cada uno con los botones − / +), y luego:
+
+- El botón flotante naranja con el ícono de carrito (junto al de WhatsApp) abre el carrito con todo lo agregado.
+- Ahí puede cambiar cantidades, quitar productos, y ver el total estimado.
+- Al presionar "Continuar con el pedido" pasa al formulario (nombre, WhatsApp, correo, nota).
+- Al confirmar, el correo que te llega incluye el detalle completo del pedido (cada producto, cantidad y subtotal) y el total — no solo un producto.
+- El carrito se guarda en el navegador del cliente (aunque cierre o recargue la página, antes de confirmar el pedido), y se vacía automáticamente después de un pedido exitoso.
 - **Descripciones y ficha técnica**: están tomadas de las fichas técnicas que compartiste (sin incluir la fórmula activa, como pediste) y las capacidades están en galones. Puedes ajustarlas en `index.html` dentro de cada `<article class="product-card">`.
 - **Fotos de producto**: la carpeta `assets/` guarda los originales como respaldo, pero el sitio **ya no las carga desde ahí** (ver nota abajo). El producto "Doble Acción Premium Cisternas" reutiliza la misma foto que "Doble Acción Premium" (no se recibió una foto distinta para esa variante).
 - **Nota sobre las fotos**: el texto que aparece dentro de las imágenes (nombre del producto, meses de uso, capacidad, etc.) es parte del diseño gráfico y está en litros — no se puede editar como texto normal. Si quieres esas imágenes también en galones, lo ideal es pedir el diseño original (editable) a quien las creó.
