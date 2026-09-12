@@ -18,8 +18,16 @@ Sin esa clave, el sitio funciona igual, pero al enviar el formulario le dirá al
 
 - **Precios**: cada producto tiene `RD$ 100` como precio de ejemplo (así lo pediste). Búscalo en `index.html` — hay 4 líneas `<span class="price">RD$ 100</span>` y 4 atributos `data-price="RD$ 100"` en los botones "Pedir ahora" (uno por cada producto, incluyendo Doble Acción Premium Cisternas).
 - **Descripciones y ficha técnica**: están tomadas de las fichas técnicas que compartiste (sin incluir la fórmula activa, como pediste) y las capacidades están en galones. Puedes ajustarlas en `index.html` dentro de cada `<article class="product-card">`.
-- **Fotos de producto**: están en la carpeta `assets/`. El producto "Doble Acción Premium Cisternas" reutiliza la misma foto que "Doble Acción Premium" (no se recibió una foto distinta para esa variante) — si tienes una foto específica para cisternas, reemplázala ahí.
+- **Fotos de producto**: la carpeta `assets/` guarda los originales como respaldo, pero el sitio **ya no las carga desde ahí** (ver nota abajo). El producto "Doble Acción Premium Cisternas" reutiliza la misma foto que "Doble Acción Premium" (no se recibió una foto distinta para esa variante).
 - **Nota sobre las fotos**: el texto que aparece dentro de las imágenes (nombre del producto, meses de uso, capacidad, etc.) es parte del diseño gráfico y está en litros — no se puede editar como texto normal. Si quieres esas imágenes también en galones, lo ideal es pedir el diseño original (editable) a quien las creó.
+
+## Por qué las fotos ya no dependen de la carpeta `assets/`
+
+Después de que las imágenes se vieran "rotas" al subir el sitio a GitHub (probablemente porque la carpeta `assets/` no se subió completa o con la estructura correcta), todas las fotos —logo, portada y productos— se incrustaron directamente dentro de `index.html` como código (esto se llama "base64"). Esto significa:
+
+- El sitio ya **no puede fallar** por una carpeta mal subida: todo vive en un solo archivo.
+- `index.html` ahora pesa más (~950 KB en vez de ~20 KB) porque contiene las fotos codificadas como texto. Es normal y no afecta la velocidad de carga de forma perceptible.
+- **Para cambiar una foto en el futuro**, ya no basta con reemplazar el archivo en `assets/` — hay que volver a pedir que se incruste la nueva imagen en el HTML (puedes pedírmelo aquí mismo, o usar un conversor de "imagen a base64" y reemplazar el bloque `src="data:image/..."` correspondiente).
 
 ## Cómo probarlo en tu computadora
 
