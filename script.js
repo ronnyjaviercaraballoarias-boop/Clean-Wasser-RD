@@ -1,7 +1,7 @@
 // ============================================================
 // CONFIGURACIÓN DEL NEGOCIO — edita estos valores
 // ============================================================
-const BUSINESS_WHATSAPP = ""; // TODO: pon tu número real, formato: código de país + número, sin + ni espacios (ej. República Dominicana: 1 809 555 1234 -> "18095551234")
+const BUSINESS_WHATSAPP = "18492038524"; // Número de WhatsApp del negocio
 const BUSINESS_WHATSAPP_MESSAGE = "Hola, quisiera más información sobre los productos de CleanWasserRD";
 
 // Clave de acceso de Web3Forms (servicio gratuito que envía el formulario a tu correo,
