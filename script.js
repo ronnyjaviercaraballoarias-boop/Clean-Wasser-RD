@@ -352,6 +352,7 @@ const ADVISOR_PRODUCTS = {
     name: "Antisarro Premium",
     price: "RD$ 100",
     anchor: "producto-antisarro",
+    capacityMax: 550,
     reason:
       "Tu problema principal es el sarro: este producto lo inhibe, remueve las incrustaciones ya existentes y reduce la corrosión en tuberías y equipos.",
   },
@@ -359,6 +360,7 @@ const ADVISOR_PRODUCTS = {
     name: "Desinfectante Premium",
     price: "RD$ 100",
     anchor: "producto-desinfectante",
+    capacityMax: 550,
     reason:
       "Tu problema principal son bacterias, mal olor o mosquitos: este producto desinfecta y oxigena el agua, eliminando bacterias, hongos, parásitos y virus, e inhibe las larvas de mosquito.",
   },
@@ -366,6 +368,7 @@ const ADVISOR_PRODUCTS = {
     name: "Doble Acción Premium",
     price: "RD$ 100",
     anchor: "producto-doble-accion",
+    capacityMax: 550,
     reason:
       "Antisarro + desinfectante en un solo producto: la protección completa para tinacos y cisternas de hasta 550 galones.",
   },
@@ -373,18 +376,28 @@ const ADVISOR_PRODUCTS = {
     name: "Doble Acción Premium Cisternas",
     price: "RD$ 100",
     anchor: "producto-doble-accion-cisternas",
+    capacityMax: 2800,
     reason:
-      "Antisarro + desinfectante en un solo producto, formulado especialmente para cisternas de gran tamaño (1,500 a 2,800 galones).",
+      "Antisarro + desinfectante en un solo producto, formulado especialmente para cisternas de gran tamaño (1,500 a 2,800 galones por cartucho).",
   },
 };
 
+// Devuelve { product, qty }: qty es cuántos cartuchos hacen falta para cubrir
+// la capacidad indicada (cada cartucho cubre hasta "capacityMax" galones).
 function getAdvisorRecommendation(state) {
+  let product;
   if (state.capacidad > 550) {
-    return ADVISOR_PRODUCTS.dobleAccionCisternas;
+    product = ADVISOR_PRODUCTS.dobleAccionCisternas;
+  } else if (state.problema === "sarro") {
+    product = ADVISOR_PRODUCTS.antisarro;
+  } else if (state.problema === "bacterias") {
+    product = ADVISOR_PRODUCTS.desinfectante;
+  } else {
+    product = ADVISOR_PRODUCTS.dobleAccion;
   }
-  if (state.problema === "sarro") return ADVISOR_PRODUCTS.antisarro;
-  if (state.problema === "bacterias") return ADVISOR_PRODUCTS.desinfectante;
-  return ADVISOR_PRODUCTS.dobleAccion;
+
+  const qty = Math.max(1, Math.ceil(state.capacidad / product.capacityMax));
+  return { product, qty };
 }
 
 const advisorModal = document.getElementById("advisorModal");
@@ -465,20 +478,28 @@ document.querySelectorAll('.advisor-option[data-field="problema"]').forEach((btn
 });
 
 function showAdvisorResult() {
-  const rec = getAdvisorRecommendation(advisorState);
-  let reason = rec.reason;
-  if (advisorState.capacidad > 2800) {
-    reason +=
-      " Tu capacidad supera nuestro rango estándar (hasta 2,800 galones) — escríbenos por WhatsApp para asesorarte sobre la dosificación adecuada.";
+  const { product: rec, qty } = getAdvisorRecommendation(advisorState);
+  const unitPrice = parsePrice(rec.price);
+  const capacidadTexto = advisorState.capacidad.toLocaleString("es-DO");
+
+  const qtyLine = document.getElementById("advisorResultQty");
+  const priceLine = document.getElementById("advisorResultPrice");
+
+  if (qty > 1) {
+    qtyLine.textContent = `Para ${capacidadTexto} galones necesitas ${qty} cartuchos de ${rec.name} (cada cartucho cubre hasta ${rec.capacityMax.toLocaleString("es-DO")} galones).`;
+    qtyLine.hidden = false;
+    priceLine.textContent = `${formatPrice(unitPrice)} c/u — Total: ${formatPrice(unitPrice * qty)} (${qty} unidades)`;
+  } else {
+    qtyLine.hidden = true;
+    priceLine.textContent = rec.price;
   }
 
   document.getElementById("advisorResultName").textContent = rec.name;
-  document.getElementById("advisorResultReason").textContent = reason;
-  document.getElementById("advisorResultPrice").textContent = rec.price;
+  document.getElementById("advisorResultReason").textContent = rec.reason;
   advisorShowStep("advisorResult");
 
   document.getElementById("advisorAddToCart").onclick = () => {
-    addToCart(rec.name, rec.price, 1);
+    addToCart(rec.name, rec.price, qty);
     closeAdvisorModal();
     openCartModal();
   };

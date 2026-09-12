@@ -26,12 +26,14 @@ Hay un botón (en el hero y arriba del catálogo) que abre un pequeño cuestiona
 2. Capacidad en galones (el cliente escribe el número).
 3. Cuál es su problema principal: sarro/incrustaciones, bacterias/mal olor/mosquitos, o ambos/no está seguro.
 
-Con esas respuestas, el sitio recomienda un producto (con foto no, pero con nombre, motivo y precio) y el cliente puede agregarlo directo al carrito o ir a verlo en el catálogo. La lógica (en `script.js`, función `getAdvisorRecommendation`) es:
+Con esas respuestas, el sitio recomienda un producto (nombre, motivo y precio) y el cliente puede agregarlo directo al carrito o ir a verlo en el catálogo. La lógica (en `script.js`, función `getAdvisorRecommendation`) es:
 
-- Si la capacidad es **mayor a 550 galones** → recomienda **Doble Acción Premium Cisternas** (es el único producto pensado para volúmenes grandes, y ya cubre sarro + bacterias). Si además supera las 2,800 galones (el máximo que manejamos), se agrega una nota sugiriendo escribir por WhatsApp para asesoría de dosificación.
+- Si la capacidad es **mayor a 550 galones** → recomienda **Doble Acción Premium Cisternas** (es el único producto pensado para volúmenes grandes, y ya cubre sarro + bacterias).
 - Si la capacidad es de **550 galones o menos**, se recomienda según el problema: sarro → Antisarro Premium; bacterias/mal olor/mosquitos → Desinfectante Premium; ambos o no está seguro → Doble Acción Premium.
 
-Si en algún momento cambias los rangos de capacidad de los productos, actualiza también esos números en `getAdvisorRecommendation` (script.js) para que el asesor siga recomendando bien.
+**Cálculo de cantidad**: cada producto tiene un tope de galones por cartucho (100 a 550 para los productos regulares, 1,500 a 2,800 para el de Cisternas). Si la capacidad que escribe el cliente supera ese tope de un solo cartucho, el asesor calcula automáticamente cuántos cartuchos necesita (capacidad ÷ tope, redondeado hacia arriba) y se lo indica — por ejemplo, una cisterna de 5,000 galones recomienda **2 cartuchos** de Doble Acción Premium Cisternas, con el precio total ya calculado. Al presionar "Agregar al carrito" se agrega automáticamente esa cantidad, no solo 1.
+
+Si en algún momento cambias los rangos de capacidad de los productos, actualiza también el `capacityMax` de cada producto en `ADVISOR_PRODUCTS` (script.js) para que el cálculo de cartuchos siga siendo correcto.
 
 ## Carrito de compras
 
