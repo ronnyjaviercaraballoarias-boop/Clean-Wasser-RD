@@ -18,6 +18,11 @@
 
 * { box-sizing: border-box; }
 
+/* Garantiza que el atributo "hidden" siempre oculte el elemento,
+   incluso si otra clase (.btn, .cart-total-row, .cart-badge, etc.)
+   también define su propio "display". */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
