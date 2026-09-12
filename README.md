@@ -18,6 +18,21 @@ Sin esa clave, el sitio funciona igual, pero al enviar el formulario le dirá al
 
 - **Precios**: cada producto tiene `RD$ 100` como precio de ejemplo (así lo pediste). Búscalo en `index.html` — hay 4 líneas `<span class="price">RD$ 100</span>` y 4 atributos `data-price="RD$ 100"` en los botones "Agregar al carrito" (uno por cada producto, incluyendo Doble Acción Premium Cisternas).
 
+## Asesor de producto ("¿Qué producto necesito?")
+
+Hay un botón (en el hero y arriba del catálogo) que abre un pequeño cuestionario de 3 preguntas para el cliente que no sabe cuál producto le conviene:
+
+1. ¿Tinaco o cisterna?
+2. Capacidad en galones (el cliente escribe el número).
+3. Cuál es su problema principal: sarro/incrustaciones, bacterias/mal olor/mosquitos, o ambos/no está seguro.
+
+Con esas respuestas, el sitio recomienda un producto (con foto no, pero con nombre, motivo y precio) y el cliente puede agregarlo directo al carrito o ir a verlo en el catálogo. La lógica (en `script.js`, función `getAdvisorRecommendation`) es:
+
+- Si la capacidad es **mayor a 550 galones** → recomienda **Doble Acción Premium Cisternas** (es el único producto pensado para volúmenes grandes, y ya cubre sarro + bacterias). Si además supera las 2,800 galones (el máximo que manejamos), se agrega una nota sugiriendo escribir por WhatsApp para asesoría de dosificación.
+- Si la capacidad es de **550 galones o menos**, se recomienda según el problema: sarro → Antisarro Premium; bacterias/mal olor/mosquitos → Desinfectante Premium; ambos o no está seguro → Doble Acción Premium.
+
+Si en algún momento cambias los rangos de capacidad de los productos, actualiza también esos números en `getAdvisorRecommendation` (script.js) para que el asesor siga recomendando bien.
+
 ## Carrito de compras
 
 El cliente puede agregar varios productos distintos (ajustando la cantidad de cada uno con los botones − / +), y luego:

@@ -345,3 +345,155 @@ orderForm.addEventListener("submit", async (e) => {
     submitBtn.textContent = "Confirmar pedido";
   }
 });
+
+// --- Asesor de producto ("¿Qué producto necesito?") ---
+const ADVISOR_PRODUCTS = {
+  antisarro: {
+    name: "Antisarro Premium",
+    price: "RD$ 100",
+    anchor: "producto-antisarro",
+    reason:
+      "Tu problema principal es el sarro: este producto lo inhibe, remueve las incrustaciones ya existentes y reduce la corrosión en tuberías y equipos.",
+  },
+  desinfectante: {
+    name: "Desinfectante Premium",
+    price: "RD$ 100",
+    anchor: "producto-desinfectante",
+    reason:
+      "Tu problema principal son bacterias, mal olor o mosquitos: este producto desinfecta y oxigena el agua, eliminando bacterias, hongos, parásitos y virus, e inhibe las larvas de mosquito.",
+  },
+  dobleAccion: {
+    name: "Doble Acción Premium",
+    price: "RD$ 100",
+    anchor: "producto-doble-accion",
+    reason:
+      "Antisarro + desinfectante en un solo producto: la protección completa para tinacos y cisternas de hasta 550 galones.",
+  },
+  dobleAccionCisternas: {
+    name: "Doble Acción Premium Cisternas",
+    price: "RD$ 100",
+    anchor: "producto-doble-accion-cisternas",
+    reason:
+      "Antisarro + desinfectante en un solo producto, formulado especialmente para cisternas de gran tamaño (1,500 a 2,800 galones).",
+  },
+};
+
+function getAdvisorRecommendation(state) {
+  if (state.capacidad > 550) {
+    return ADVISOR_PRODUCTS.dobleAccionCisternas;
+  }
+  if (state.problema === "sarro") return ADVISOR_PRODUCTS.antisarro;
+  if (state.problema === "bacterias") return ADVISOR_PRODUCTS.desinfectante;
+  return ADVISOR_PRODUCTS.dobleAccion;
+}
+
+const advisorModal = document.getElementById("advisorModal");
+const advisorClose = document.getElementById("advisorClose");
+const advisorSteps = ["advisorStep1", "advisorStep2", "advisorStep3", "advisorResult"].map((id) =>
+  document.getElementById(id)
+);
+const advisorCapacidad = document.getElementById("advisorCapacidad");
+const advisorStep2Next = document.getElementById("advisorStep2Next");
+
+const advisorState = { tipo: null, capacidad: null, problema: null };
+
+function advisorShowStep(id) {
+  advisorSteps.forEach((el) => {
+    el.hidden = el.id !== id;
+  });
+}
+
+function openAdvisorModal() {
+  advisorState.tipo = null;
+  advisorState.capacidad = null;
+  advisorState.problema = null;
+  advisorCapacidad.value = "";
+  advisorStep2Next.disabled = true;
+  advisorShowStep("advisorStep1");
+  advisorModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeAdvisorModal() {
+  advisorModal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll(".open-advisor-btn").forEach((btn) => {
+  btn.addEventListener("click", openAdvisorModal);
+});
+
+advisorClose.addEventListener("click", closeAdvisorModal);
+advisorModal.addEventListener("click", (e) => {
+  if (e.target === advisorModal) closeAdvisorModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && advisorModal.classList.contains("open")) closeAdvisorModal();
+});
+
+document.querySelectorAll(".back-link[data-back]").forEach((btn) => {
+  btn.addEventListener("click", () => advisorShowStep(btn.dataset.back));
+});
+
+document.querySelectorAll('.advisor-option[data-field="tipo"]').forEach((btn) => {
+  btn.addEventListener("click", () => {
+    advisorState.tipo = btn.dataset.value;
+    advisorShowStep("advisorStep2");
+    advisorCapacidad.focus();
+  });
+});
+
+advisorCapacidad.addEventListener("input", () => {
+  advisorStep2Next.disabled = !(parseFloat(advisorCapacidad.value) > 0);
+});
+advisorCapacidad.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !advisorStep2Next.disabled) {
+    e.preventDefault();
+    advisorStep2Next.click();
+  }
+});
+advisorStep2Next.addEventListener("click", () => {
+  advisorState.capacidad = parseFloat(advisorCapacidad.value);
+  advisorShowStep("advisorStep3");
+});
+
+document.querySelectorAll('.advisor-option[data-field="problema"]').forEach((btn) => {
+  btn.addEventListener("click", () => {
+    advisorState.problema = btn.dataset.value;
+    showAdvisorResult();
+  });
+});
+
+function showAdvisorResult() {
+  const rec = getAdvisorRecommendation(advisorState);
+  let reason = rec.reason;
+  if (advisorState.capacidad > 2800) {
+    reason +=
+      " Tu capacidad supera nuestro rango estándar (hasta 2,800 galones) — escríbenos por WhatsApp para asesorarte sobre la dosificación adecuada.";
+  }
+
+  document.getElementById("advisorResultName").textContent = rec.name;
+  document.getElementById("advisorResultReason").textContent = reason;
+  document.getElementById("advisorResultPrice").textContent = rec.price;
+  advisorShowStep("advisorResult");
+
+  document.getElementById("advisorAddToCart").onclick = () => {
+    addToCart(rec.name, rec.price, 1);
+    closeAdvisorModal();
+    openCartModal();
+  };
+
+  document.getElementById("advisorViewProduct").onclick = () => {
+    closeAdvisorModal();
+    const el = document.getElementById(rec.anchor);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("highlight");
+        setTimeout(() => el.classList.remove("highlight"), 1800);
+      }, 50);
+    }
+  };
+}
+
+document.getElementById("advisorRestart").addEventListener("click", openAdvisorModal);

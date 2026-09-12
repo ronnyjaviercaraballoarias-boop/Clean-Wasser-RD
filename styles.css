@@ -89,6 +89,13 @@ a { color: inherit; text-decoration: none; }
 
 .btn-block { width: 100%; }
 
+.btn-advisor {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--cyan);
+  border: 1.5px solid rgba(56, 189, 248, 0.4);
+}
+.btn-advisor:hover { background: rgba(56, 189, 248, 0.2); border-color: var(--cyan); }
+
 /* Header */
 .site-header {
   position: sticky;
@@ -568,6 +575,33 @@ a { color: inherit; text-decoration: none; }
 }
 .back-link:hover { text-decoration: underline; }
 
+.advisor-hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin: -20px 0 40px;
+}
+.advisor-hint-link {
+  background: none;
+  border: none;
+  color: var(--cyan);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  text-decoration: underline;
+}
+.advisor-hint-link:hover { color: var(--white); }
+
+/* Product card highlight (used when jumping here from the advisor result) */
+.product-card.highlight {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.18), var(--shadow);
+  transition: box-shadow 0.3s ease, outline-color 0.3s ease;
+}
+
 /* Contact CTA */
 .contact-cta {
   background: linear-gradient(135deg, var(--navy-light), var(--navy));
@@ -698,6 +732,86 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   margin: 12px 0 0;
 }
+
+/* Advisor (¿qué producto necesito?) */
+.advisor-progress {
+  display: flex;
+  gap: 6px;
+  margin: 0 0 20px;
+}
+.advisor-progress span {
+  height: 4px;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.advisor-progress span.on { background: var(--cyan); }
+
+.advisor-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--text-muted);
+}
+
+.advisor-options {
+  display: flex;
+  gap: 12px;
+}
+.advisor-options-col { flex-direction: column; }
+
+.advisor-option {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: var(--white);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.advisor-option:hover { border-color: var(--cyan); background: rgba(56, 189, 248, 0.08); }
+.advisor-option span {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+#advisorStep2 label { display: block; font-size: 0.82rem; font-weight: 600; margin: 0 0 6px; color: var(--text-muted); }
+#advisorCapacidad {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+}
+#advisorCapacidad:focus { outline: none; border-color: var(--cyan); }
+
+.advisor-result-card {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 0 0 20px;
+}
+.advisor-result-name { margin: 0 0 8px; font-size: 1.15rem; font-weight: 800; color: var(--cyan); }
+.advisor-result-reason { margin: 0 0 12px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+.advisor-result-price { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--orange); }
+
+#advisorViewProduct { margin-top: 10px; }
+.advisor-restart { display: block; margin: 16px auto 0; text-align: center; }
 
 .success-view, .error-view { text-align: center; padding: 10px 0; }
 .success-icon {
