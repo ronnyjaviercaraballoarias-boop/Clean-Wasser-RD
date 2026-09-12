@@ -7,7 +7,7 @@ const BUSINESS_WHATSAPP_MESSAGE = "Hola, quisiera más información sobre los pr
 // Clave de acceso de Web3Forms (servicio gratuito que envía el formulario a tu correo,
 // sin necesidad de programar un backend). Regístrate gratis en https://web3forms.com,
 // confirma tu correo y pega aquí la "Access Key" que te den.
-const WEB3FORMS_ACCESS_KEY = "PON_AQUI_TU_ACCESS_KEY";
+const WEB3FORMS_ACCESS_KEY = "1600cefc-2691-4014-baa3-bc0321bc78d1";
 
 // ============================================================
 // No es necesario tocar nada debajo de esta línea
